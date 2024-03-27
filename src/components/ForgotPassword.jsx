@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     const btn = document.getElementById("sendEmailBtn");
     try {
       let res = await axios.post(
-        "https://localhost:4000/api/user/forgotPassword",
+        "https://password-reset-backend-16ua.onrender.com/api/user/forgotPassword",
         values
       );
       if (res.status === 201) {

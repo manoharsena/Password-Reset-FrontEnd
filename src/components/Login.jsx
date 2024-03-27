@@ -21,7 +21,7 @@ const Login = ({ setUsername }) => {
   const onSubmit = async (values) => {
     try {
       const res = await axios.post(
-        "https://localhost:4000/api/user/login",
+        "https://password-reset-backend-16ua.onrender.com/api/user/login",
         values
       );
       if (res.status === 200) {

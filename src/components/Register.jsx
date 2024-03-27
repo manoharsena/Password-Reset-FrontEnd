@@ -25,7 +25,7 @@ const Register = () => {
   const onSubmit = async (values) => {
     try {
       let res = await axios.post(
-        "https://localhost:4000/api/user/register",
+        "https://password-reset-backend-16ua.onrender.com/api/user/register",
         values
       );
       console.log(values);
