@@ -12,10 +12,10 @@ const Login = ({ setUsername }) => {
 
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email()
-      .matches(/^(?!.*@[^,]*,)/)
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+      .email("Invalid email address")
+      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address")
+      .required("Email is Required"),
+    password: Yup.string().min(8).required("Password is Required"),
   });
 
   const onSubmit = async (values) => {
@@ -25,13 +25,14 @@ const Login = ({ setUsername }) => {
         values
       );
       if (res.status === 200) {
-        setUsername(res.data.data.username);
+        SetUserName(res.data.data.username);
         toast.success(res.data.message);
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/home");
+        }, 500);
       }
     } catch (error) {
       toast.error("User does not exist or Invalid Password");
-      console.log(error.response);
     }
   };
 
@@ -42,10 +43,7 @@ const Login = ({ setUsername }) => {
   });
 
   return (
-    <div
-      className="mx-auto p-5 mt-5 rounded-3"
-      style={{ width: "600px" }}
-    >
+    <div className="mx-auto p-5 mt-5 rounded-3" style={{ width: "600px" }}>
       <h1 className="text-center mb-4">Login</h1>
       <form
         className="p-5 bg-light w-100 mx-auto rounded-3"
@@ -62,7 +60,11 @@ const Login = ({ setUsername }) => {
             id="email"
             placeholder="Enter your email"
             value={formik.values.email}
-            style={{ height: "60px", fontSize: "20px", border:"2px solid lightblue" }}
+            style={{
+              height: "60px",
+              fontSize: "20px",
+              border: "2px solid lightblue",
+            }}
             onChange={formik.handleChange}
           />
           <span className="text-danger">{formik.errors.email}</span>
@@ -77,13 +79,21 @@ const Login = ({ setUsername }) => {
             id="password"
             placeholder="Enter your password"
             value={formik.values.password}
-            style={{ height: "60px", fontSize: "20px", border:"2px solid lightblue" }}
+            style={{
+              height: "60px",
+              fontSize: "20px",
+              border: "2px solid lightblue",
+            }}
             onChange={formik.handleChange}
           />
           <span className="text-danger">{formik.errors.password}</span>
         </div>
         <div>
-          <button type="submit" style={{ fontSize: "20px" }} className="btn btn-success mt-3">
+          <button
+            type="submit"
+            style={{ fontSize: "20px" }}
+            className="btn btn-success mt-3"
+          >
             Sign in
           </button>
         </div>

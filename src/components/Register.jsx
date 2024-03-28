@@ -14,12 +14,14 @@ const Register = () => {
   };
 
   const validationSchema = Yup.object({
-    username: Yup.string().required("Username is required"),
+    username: Yup.string()
+      .matches(/^[A-Za-z][A-Za-z0-9_]{3,29}$/g, "Invalid Username")
+      .required("Username is Required"),
     email: Yup.string()
-      .email()
-      .matches(/^(?!.*@[^,]*,)/)
-      .required("Email is required"),
-    password: Yup.string().min(8).required("Password is required"),
+      .email("Invalid email address")
+      .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g, "Invalid email address")
+      .required("Email is Required"),
+    password: Yup.string().min(8).required("Password is Required"),
   });
 
   const onSubmit = async (values) => {
@@ -28,14 +30,15 @@ const Register = () => {
         "https://password-reset-backend-16ua.onrender.com/api/user/register",
         values
       );
-      console.log(values);
+
       if (res.status === 201) {
         toast.success(res.data.message);
-        navigate("/");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       }
     } catch (error) {
       toast.error("User already Exists");
-      console.log(error);
     }
   };
 
@@ -46,10 +49,7 @@ const Register = () => {
   });
 
   return (
-    <div
-      className="mx-auto p-5 mt-5 rounded-3"
-      style={{ width: "500px" }}
-    >
+    <div className="mx-auto p-5 mt-5 rounded-3" style={{ width: "500px" }}>
       <h1 className="text-center mb-4">User Registration</h1>
       <form
         className="p-5 bg-light w-100 mx-auto rounded-3"
@@ -66,7 +66,11 @@ const Register = () => {
             id="username"
             placeholder="Enter your username"
             value={formik.values.username}
-            style={{ height: "60px", fontSize: "20px", border:"2px solid lightblue" }}
+            style={{
+              height: "60px",
+              fontSize: "20px",
+              border: "2px solid lightblue",
+            }}
             onChange={formik.handleChange}
           />
           <span className="text-danger">{formik.errors.username}</span>
@@ -81,7 +85,11 @@ const Register = () => {
             id="email"
             placeholder="Enter your email"
             value={formik.values.email}
-            style={{ height: "60px", fontSize: "20px", border:"2px solid lightblue" }}
+            style={{
+              height: "60px",
+              fontSize: "20px",
+              border: "2px solid lightblue",
+            }}
             onChange={formik.handleChange}
           />
           <span className="text-danger">{formik.errors.email}</span>
@@ -96,13 +104,21 @@ const Register = () => {
             id="password"
             placeholder="Enter your password"
             value={formik.values.password}
-            style={{ height: "60px", fontSize: "20px", border:"2px solid lightblue" }}
+            style={{
+              height: "60px",
+              fontSize: "20px",
+              border: "2px solid lightblue",
+            }}
             onChange={formik.handleChange}
           />
           <span className="text-danger">{formik.errors.password}</span>
         </div>
         <div className="d-grid ">
-          <button type="submit" style={{ fontSize: "20px" }} className="btn btn-success mt-3">
+          <button
+            type="submit"
+            style={{ fontSize: "20px" }}
+            className="btn btn-success mt-3"
+          >
             Register
           </button>
         </div>
