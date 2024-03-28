@@ -25,11 +25,9 @@ const Login = ({ setUsername }) => {
         values
       );
       if (res.status === 200) {
-        SetUserName(res.data.data.username);
+        setUsername(res.data.data.username);
         toast.success(res.data.message);
-        setTimeout(() => {
-          navigate("/home");
-        }, 500);
+        navigate("/dashboard");
       }
     } catch (error) {
       toast.error("User does not exist or Invalid Password");
