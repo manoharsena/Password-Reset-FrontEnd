@@ -33,9 +33,7 @@ const Register = () => {
 
       if (res.status === 201) {
         toast.success(res.data.message);
-        setTimeout(() => {
-          navigate("/login");
-        }, 1000);
+        navigate("/");
       }
     } catch (error) {
       toast.error("User already Exists");
